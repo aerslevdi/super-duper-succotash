@@ -1,17 +1,17 @@
 package com.example.digital.moma.model;
 
 public class Obra {
-    private Integer image;
+    private String image;
     private String name;
     private String artistId;
 
-    public Obra(Integer image, String name, String artistId) {
+    public Obra(String image, String name, String artistId) {
         this.image = image;
         this.name = name;
         this.artistId = artistId;
     }
 
-    public Integer getImage() {
+    public String getImage() {
         return image;
     }
 

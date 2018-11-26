@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.example.digital.moma.R;
 import com.example.digital.moma.model.Obra;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ObrasAdapter extends RecyclerView.Adapter<ObrasAdapter.ObrasHolder> {
@@ -48,6 +49,7 @@ public class ObrasAdapter extends RecyclerView.Adapter<ObrasAdapter.ObrasHolder>
     public int getItemCount() {
         return obraList.size();
     }
+
     public class ObrasHolder extends RecyclerView.ViewHolder {
         // ATRIBUTOS
         private TextView textViewNombre;

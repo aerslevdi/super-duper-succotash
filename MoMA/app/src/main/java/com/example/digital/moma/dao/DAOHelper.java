@@ -4,7 +4,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DAOHelper {
+public abstract class DAOHelper {
     protected Retrofit retrofit;
 
     public DAOHelper(String base_url) {

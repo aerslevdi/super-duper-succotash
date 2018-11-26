@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 
 public interface ServiceObras {
 
-    @GET("api/obra")
+    @GET("bins/x858r/")
     Call<ContenedorObras> traerObras();
 }

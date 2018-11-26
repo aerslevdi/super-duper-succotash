@@ -12,7 +12,7 @@ import com.example.digital.moma.utils.ResultListener;
 import java.util.List;
 
 public class ObraController {
-    public void traerAmiibos(Context context, final ResultListener<List<Obra>> listenerView) {
+    public void traerObras(Context context, final ResultListener<List<Obra>> listenerView) {
         if (com.example.digital.moma.utils.Util.isOnline(context)) {
             DAOObras daoObras = new DAOObras(DAOObras.BASE_URL);
             daoObras.traerObras(new ResultListener<List<Obra>>() {

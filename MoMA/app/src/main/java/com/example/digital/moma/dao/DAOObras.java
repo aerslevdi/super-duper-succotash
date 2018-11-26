@@ -1,6 +1,5 @@
 package com.example.digital.moma.dao;
 
-import android.telecom.Call;
 import android.util.Log;
 
 import com.example.digital.moma.model.ContenedorObras;
@@ -9,12 +8,13 @@ import com.example.digital.moma.utils.ResultListener;
 
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DAOObras extends DAOHelper{
     private ServiceObras serviceObras;
-    public static final String BASE_URL = "https://api.myjson.com/bins/x858r";
+    public static final String BASE_URL = "https://api.myjson.com/";
 
     public DAOObras(String base_url) {
         super(base_url);
@@ -22,8 +22,9 @@ public class DAOObras extends DAOHelper{
     }
 
     public void traerObras(final ResultListener<List<Obra>> listenerController){
-        retrofit2.Call<ContenedorObras>call = serviceObras.traerObras();
-        call.enqueue(new Callback<ContenedorObras>() {
+        Call<ContenedorObras> contenedorObrasCall = serviceObras.traerObras();
+        //retrofit2.Call<ContenedorObras>call = serviceObras.traerObras();
+        contenedorObrasCall.enqueue(new Callback<ContenedorObras>() {
             @Override
             public void onResponse(retrofit2.Call<ContenedorObras> call, Response<ContenedorObras> response) {
                 if (response.code() >= 200 && response.code() < 300) {
