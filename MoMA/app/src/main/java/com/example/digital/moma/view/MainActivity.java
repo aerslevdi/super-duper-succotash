@@ -14,6 +14,8 @@ import com.example.digital.moma.R;
 import com.example.digital.moma.controller.ObraController;
 import com.example.digital.moma.model.Obra;
 import com.example.digital.moma.utils.ResultListener;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
 
         final ObrasAdapter obrasAdapter = new ObrasAdapter(listaObras);
         final ObraController obraController = new ObraController();
