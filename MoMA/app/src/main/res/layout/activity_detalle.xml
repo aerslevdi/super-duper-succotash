@@ -6,12 +6,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.DetalleActivity">
+
     <ImageView
+        android:id="@+id/imagenObra"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+
+        android:src="@drawable/header" />
+    <TextView
+        android:id="@+id/nombreObra"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imagenObra"
-        android:scaleType="centerCrop"
-        android:layout_centerHorizontal="true"
+        android:layout_below="@id/imagenObra"
+        android:text="artista"
+        android:textSize="20dp"/>
+    <TextView
+        android:id="@+id/idArtista"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nombreObra"
+        android:text="5"
+        android:textSize="20dp"
         />
+
 
 </RelativeLayout>

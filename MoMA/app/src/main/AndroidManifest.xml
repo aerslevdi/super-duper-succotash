@@ -28,14 +28,16 @@
 
 
         <activity android:name=".view.MainActivity">
+
+        </activity>
+        <activity android:name=".view.DetalleActivity" />
+        <activity android:name=".view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.DetalleActivity" />
-        <activity android:name=".view.LoginActivity"></activity>
     </application>
 
 </manifest>

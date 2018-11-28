@@ -1,5 +1,6 @@
 package com.example.digital.moma.view;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
@@ -8,19 +9,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.digital.moma.R;
 import com.example.digital.moma.model.Obra;
+import com.facebook.Profile;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ObrasAdapter extends RecyclerView.Adapter<ObrasAdapter.ObrasHolder> {
     private List<Obra> obraList;
+    private FirebaseStorage firebaseStorage;
+    private AdapterListener adapterListener;
 
-    public ObrasAdapter(List<Obra> obraList) {
+    public ObrasAdapter(List<Obra> obraList, AdapterListener adapterListener) {
         this.obraList = obraList;
+        this.adapterListener = adapterListener;
     }
 
     public void setObraList(List<Obra> obraList) {
@@ -55,18 +65,47 @@ public class ObrasAdapter extends RecyclerView.Adapter<ObrasAdapter.ObrasHolder>
         private TextView textViewNombre;
         private ImageView imageView;
 
+        Profile profile = Profile.getCurrentProfile();
+
 
         public ObrasHolder(@NonNull View itemView) {
             super(itemView);
             textViewNombre = itemView.findViewById(R.id.obraNombre);
             imageView = itemView.findViewById(R.id.image);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Obra obra = obraList.get(getAdapterPosition());
+                    adapterListener.irDetalle(obra, profile);
+
+                }
+            });
         }
 
         public void cargar(Obra obra) {
             textViewNombre.setText(obra.getName());
+            firebaseStorage = FirebaseStorage.getInstance();
+            StorageReference raiz = firebaseStorage.getReference();
 
-            Glide.with(itemView.getContext()).load(obra.getImage()).into(imageView);
+            StorageReference imagenes = raiz.child("artistpaints");
+            firebaseStorage = FirebaseStorage.getInstance();
+
+            //VIA URI
+            imagenes.child(obra.getImage()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+           @Override
+           public void onSuccess(Uri uri) {
+               Glide.with(itemView.getContext()).load(uri).into(imageView);
+           }
+       }).addOnFailureListener(new OnFailureListener() {
+           @Override            public void onFailure(@NonNull Exception exception) {
+               Toast.makeText(itemView.getContext(), "Error", Toast.LENGTH_LONG).show();
+          }
+       });
+
         }
+    }
+    public interface AdapterListener {
+        void irDetalle(Obra obra, Profile profile);
     }
 
 }
