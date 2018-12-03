@@ -88,16 +88,16 @@ public class ObrasAdapter extends RecyclerView.Adapter<ObrasAdapter.ObrasHolder>
 
 
         public void cargar(Obra obra) {
-            textViewNombre.setText(obra.getName());
+            textViewNombre.setText(obra.getName().toUpperCase());
 
             firebaseStorage = FirebaseStorage.getInstance();
             StorageReference raiz = firebaseStorage.getReference();
 
-            StorageReference imagenes = raiz.child("artistpaints");
+
             firebaseStorage = FirebaseStorage.getInstance();
 
             //VIA URI
-            imagenes.child(obra.getImage()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            raiz.child(obra.getImage()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
                     Glide.with(itemView.getContext()).load(uri).into(imageView);

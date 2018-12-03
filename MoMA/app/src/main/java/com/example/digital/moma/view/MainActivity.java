@@ -25,6 +25,7 @@ import com.example.digital.moma.utils.ResultListener;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements ObrasAdapter.Adap
         navHeader = navigationView.getHeaderView(0);
         userIcon = navHeader.findViewById(R.id.userIcon);
         userName = navHeader.findViewById(R.id.userName);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         nombre = bundle.getString(KEY_NAME);
         userName.setText(nombre);
@@ -77,7 +78,9 @@ public class MainActivity extends AppCompatActivity implements ObrasAdapter.Adap
                         //Ir a chat
                         return true;
                     case R.id.logout:
-                        FirebaseAuth.getInstance().signOut();
+                        LoginManager.getInstance().logOut();
+                        Intent logout = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(logout);
                         return true;
                 }
                 return false;
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements ObrasAdapter.Adap
         Bundle bundle = new Bundle();
         bundle.putString(DetalleActivity.KEY_AUTHOR, obra.getArtistId());
         bundle.putString(DetalleActivity.KEY_IMG, obra.getImage());
-        bundle.putString(DetalleActivity.KEY_OBRA, obra.getName());
+        bundle.putString(DetalleActivity.KEY_OBRA, obra.getName().toUpperCase());
         intent.putExtras(bundle);
         startActivity(intent);
 

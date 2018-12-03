@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.digital.moma.R;
 import com.example.digital.moma.model.Artista;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +29,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 public class DetalleActivity extends AppCompatActivity {
-
 
     private TextView userName;
     private ImageView userIcon;
@@ -52,10 +52,8 @@ public class DetalleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detalle);
 
         //DRAWER -INICIO
-        drawerLayout = findViewById(R.id.mainLayout);
-        navigationView = findViewById(R.id.drawer);
-        drawerLayout = findViewById(R.id.mainLayout);
-        navigationView = findViewById(R.id.drawer);
+        drawerLayout = findViewById(R.id.mLayout);
+        navigationView = findViewById(R.id.navView);
         navHeader = navigationView.getHeaderView(0);
         userIcon = navHeader.findViewById(R.id.userIcon);
         userName = navHeader.findViewById(R.id.userName);
@@ -71,7 +69,7 @@ public class DetalleActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 drawerLayout.closeDrawers();
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.obras:
                         Intent intent = new Intent(DetalleActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -81,91 +79,85 @@ public class DetalleActivity extends AppCompatActivity {
                         return true;
                     case R.id.logout:
                         FirebaseAuth.getInstance().signOut();
+                        Intent login = new Intent(DetalleActivity.this, LoginActivity.class);
+                        startActivity(login);
                         return true;
                 }
                 return false;
             }
         });
+        //DRAWER - FINAL
 
-            firebaseStorage = FirebaseStorage.getInstance();
-            StorageReference raiz = firebaseStorage.getReference();
+        //SETEO FIREBASE
 
-            StorageReference imagenes = raiz.child("artistpaints");
-            firebaseStorage = FirebaseStorage.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference raiz = firebaseStorage.getReference();
 
-            mDatabase = FirebaseDatabase.getInstance();
+        Intent intent2 = getIntent();
+        Bundle bundle = intent2.getExtras();
 
-            DatabaseReference root = mDatabase.getReference();
-            final DatabaseReference artists = root.child("artists");
+        String nombre = bundle.getString(KEY_OBRA);
+        String imagen = bundle.getString(KEY_IMG);
+        final String autorID = bundle.getString(KEY_AUTHOR);
+        Integer id = (Integer.parseInt(autorID)) - 1;
 
+        mDatabase = FirebaseDatabase.getInstance();
 
-            Intent intent = getIntent();
-            Bundle bundle = intent.getExtras();
+        DatabaseReference root = mDatabase.getReference();
+        final DatabaseReference artists = root.child("artists");
+        DatabaseReference child = artists.child(id.toString());
+        //DatabaseReference idReference = mDatabase.getReference("artistID");
 
-            String nombre = bundle.getString(KEY_OBRA);
-            String  imagen = bundle.getString(KEY_IMG);
-            final String autorID = bundle.getString(KEY_AUTHOR);
+        //BUSCAR COMPONENTES
 
-            imagenObra = findViewById(R.id.imagenObra);
-            nombreArtista = findViewById(R.id.nameArtista);
-            nombreObra = findViewById(R.id.nameObra);
-            influence = findViewById(R.id.influence);
-            country = findViewById(R.id.country);
-            drawerLayout = findViewById(R.id.mainLayout);
-            navigationView = findViewById(R.id.navView);
+        imagenObra = findViewById(R.id.imagenObra);
+        nombreArtista = findViewById(R.id.nameArtista);
+        nombreObra = findViewById(R.id.nameObra);
+        influence = findViewById(R.id.influence);
+        country = findViewById(R.id.country);
+        drawerLayout = findViewById(R.id.mLayout);
+        navigationView = findViewById(R.id.navView);
 
-            nombreObra.setText(nombre);
+        //SETEAR COMPONENTES
 
-            imagenes.child(imagen).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Glide.with(DetalleActivity.this).load(uri).into(imagenObra);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override            public void onFailure(@NonNull Exception exception) {
-                    Toast.makeText(DetalleActivity.this, "Error", Toast.LENGTH_LONG).show();
-                }
-            });
+        nombreObra.setText(nombre);
 
-            artists.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+        //SETEAR IMAGEN
+        raiz.child(imagen).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(DetalleActivity.this).load(uri).into(imagenObra);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(DetalleActivity.this, "Error", Toast.LENGTH_LONG).show();
+            }
+        });
 
+        //SETEAR DATOS ARTISTA
 
-                    for (DataSnapshot childSnapShot : dataSnapshot.getChildren()){
-                        if ((childSnapShot.child("artistID")).equals(autorID) ){
-                            Artista artista = dataSnapshot.getValue(Artista.class);
-                            String influencia = artista.getInfluenced_by();
-                            String pais = artista.getNationality();
-                            String nombre = artista.getName();
-                            nombreArtista.setText(nombre);
-                            country.setText(pais);
-                            influence.setText(influencia);
-                        };
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
+        child.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
 
 
+                Artista artist1 = dataSnapshot.getValue(Artista.class);
+                String influencia = artist1.getInfluenced_by();
+                String pais = artist1.getNationality();
+                String nombre = artist1.getName();
+                nombreArtista.setText(nombre);
+                country.setText(pais);
+                influence.setText(influencia);
 
 
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
 
-           
-
-
-
-
-
-        }//DRAWER - FINAL
-
-
-
-
+    }
 }
