@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.digital.moma.R;
 import com.example.digital.moma.controller.ObraController;
 import com.example.digital.moma.model.Obra;
+import com.example.digital.moma.model.User;
 import com.example.digital.moma.utils.ResultListener;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
@@ -110,14 +111,12 @@ public class MainActivity extends AppCompatActivity implements ObrasAdapter.Adap
     }
 
     @Override
-    public void irDetalle(Obra obra, Profile profile) {
+    public void irDetalle(Obra obra) {
         Intent intent = new Intent(MainActivity.this, DetalleActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString(DetalleActivity.KEY_USER, nombre);
-        bundle.putParcelable(DetalleActivity.KEY_IMG, uri);
-        bundle.putString(DetalleActivity.KEY_ARTISTA, obra.getArtistId());
-        bundle.putString(DetalleActivity.KEY_OBRA, obra.getImage());
-        bundle.putString(DetalleActivity.KEY_TITULO, obra.getName());
+        bundle.putString(DetalleActivity.KEY_AUTHOR, obra.getArtistId());
+        bundle.putString(DetalleActivity.KEY_IMG, obra.getImage());
+        bundle.putString(DetalleActivity.KEY_OBRA, obra.getName());
         intent.putExtras(bundle);
         startActivity(intent);
 

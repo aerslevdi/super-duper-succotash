@@ -1,36 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:openDrawer="start"
+    android:id="@+id/mainLayout"
     tools:context=".view.DetalleActivity">
 
-    <ImageView
-        android:id="@+id/imagenObra"
-        android:layout_width="wrap_content"
-        android:layout_height="300dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:scaleType="centerInside"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/imagenObra"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/header" />
+        <TextView
+            android:id="@+id/nameObra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imagenObra"
+            android:text="artista"
 
-        android:src="@drawable/header" />
-    <TextView
-        android:id="@+id/nombreObra"
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/nameArtista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nameObra"
+            android:text="nombre"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nameArtista"
+            android:textSize="20sp"
+            android:text="pais"/>
+        <TextView
+            android:id="@+id/influence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/country"
+            android:textSize="20sp"
+            android:text="influencia"/>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navView"
+        app:headerLayout="@drawable/header"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/imagenObra"
-        android:text="artista"
-        android:textSize="20dp"/>
-    <TextView
-        android:id="@+id/idArtista"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nombreObra"
-        android:text="5"
-        android:textSize="20dp"
+        android:layout_height="match_parent"
+        app:menu="@menu/menu"
+        android:layout_gravity= "start"
         />
 
 
-</RelativeLayout>
+</android.support.v4.widget.DrawerLayout>

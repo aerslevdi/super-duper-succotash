@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.digital.moma.R;
+import com.example.digital.moma.model.User;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -44,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private ImageView imageViewFacebook;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser currentUser;
+
 
 
     @Override
@@ -105,9 +107,10 @@ public class LoginActivity extends AppCompatActivity {
             findViewById(R.id.login_button).setVisibility(View.GONE);
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString(MainActivity.KEY_NAME, (Profile.getCurrentProfile()).getName());
-            Uri uri = (Profile.getCurrentProfile()).getProfilePictureUri(500, 500);
-            bundle.putParcelable(MainActivity.KEY_IMAGE, uri);
+            User userInfo = new User(Profile.getCurrentProfile().getName(), Profile.getCurrentProfile().getProfilePictureUri(500,500));
+            bundle.putString(MainActivity.KEY_NAME, userInfo.getName());
+
+            bundle.putParcelable(MainActivity.KEY_IMAGE, userInfo.getImage());
             intent.putExtras(bundle);
             startActivity(intent);
         }else{

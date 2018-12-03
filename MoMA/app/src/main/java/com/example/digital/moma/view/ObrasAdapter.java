@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.digital.moma.R;
 import com.example.digital.moma.model.Obra;
+import com.example.digital.moma.model.User;
 import com.facebook.Profile;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,21 +25,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ObrasAdapter extends RecyclerView.Adapter<ObrasAdapter.ObrasHolder> {
-    private List<Obra> obraList;
-    private FirebaseStorage firebaseStorage;
-    private AdapterListener adapterListener;
 
-    public ObrasAdapter(List<Obra> obraList, AdapterListener adapterListener) {
+    //ATRIBUTOS
+    private List<Obra> obraList;
+    private AdapterListener listener;
+    private FirebaseStorage firebaseStorage;
+
+    //CONSTRUCTOR
+
+
+    public ObrasAdapter(List<Obra> obraList, AdapterListener listener) {
         this.obraList = obraList;
-        this.adapterListener = adapterListener;
+        this.listener = listener;
     }
 
+    //SETTER
     public void setObraList(List<Obra> obraList) {
         this.obraList = obraList;
         notifyDataSetChanged();
     }
 
-
+    //METODOS
     @NonNull
     @Override
     public ObrasHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -65,8 +72,6 @@ public class ObrasAdapter extends RecyclerView.Adapter<ObrasAdapter.ObrasHolder>
         private TextView textViewNombre;
         private ImageView imageView;
 
-        Profile profile = Profile.getCurrentProfile();
-
 
         public ObrasHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,15 +80,16 @@ public class ObrasAdapter extends RecyclerView.Adapter<ObrasAdapter.ObrasHolder>
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Obra obra = obraList.get(getAdapterPosition());
-                    adapterListener.irDetalle(obra, profile);
-
+                    Obra obra =obraList.get(getAdapterPosition());
+                    listener.irDetalle(obra);
                 }
             });
         }
 
+
         public void cargar(Obra obra) {
             textViewNombre.setText(obra.getName());
+
             firebaseStorage = FirebaseStorage.getInstance();
             StorageReference raiz = firebaseStorage.getReference();
 
@@ -92,20 +98,21 @@ public class ObrasAdapter extends RecyclerView.Adapter<ObrasAdapter.ObrasHolder>
 
             //VIA URI
             imagenes.child(obra.getImage()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-           @Override
-           public void onSuccess(Uri uri) {
-               Glide.with(itemView.getContext()).load(uri).into(imageView);
-           }
-       }).addOnFailureListener(new OnFailureListener() {
-           @Override            public void onFailure(@NonNull Exception exception) {
-               Toast.makeText(itemView.getContext(), "Error", Toast.LENGTH_LONG).show();
-          }
-       });
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(itemView.getContext()).load(uri).into(imageView);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override            public void onFailure(@NonNull Exception exception) {
+                    Toast.makeText(itemView.getContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
 
         }
     }
-    public interface AdapterListener {
-        void irDetalle(Obra obra, Profile profile);
+
+    public interface AdapterListener{
+        void irDetalle(Obra obra);
     }
 
 }
