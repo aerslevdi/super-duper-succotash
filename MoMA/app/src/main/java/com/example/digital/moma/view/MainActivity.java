@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements ObrasAdapter.Adap
                         return true;
                     case R.id.logout:
                         LoginManager.getInstance().logOut();
+                        FirebaseAuth.getInstance().signOut();
                         Intent logout = new Intent(MainActivity.this, LoginActivity.class);
                         startActivity(logout);
                         return true;
@@ -115,11 +116,14 @@ public class MainActivity extends AppCompatActivity implements ObrasAdapter.Adap
 
     @Override
     public void irDetalle(Obra obra) {
+        //User sendUser = new User(nombre,uri);
         Intent intent = new Intent(MainActivity.this, DetalleActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(DetalleActivity.KEY_AUTHOR, obra.getArtistId());
         bundle.putString(DetalleActivity.KEY_IMG, obra.getImage());
         bundle.putString(DetalleActivity.KEY_OBRA, obra.getName().toUpperCase());
+        //bundle.putString(DetalleActivity.KEY_USERN, sendUser.getName());
+        //bundle.putParcelable(DetalleActivity.KEY_USERI, sendUser.getImage());
         intent.putExtras(bundle);
         startActivity(intent);
 

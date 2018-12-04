@@ -52,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         currentUser = firebaseAuth.getCurrentUser();
+
         ingreso(currentUser);
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();

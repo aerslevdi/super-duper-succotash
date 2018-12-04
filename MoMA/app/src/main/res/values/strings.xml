@@ -4,6 +4,9 @@
     <string name="chat">Chat</string>
     <string name="logout">Logout</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="artist_Holder">Artista:</string>
+    <string name="pais_holder">Pais:</string>
+    <string name="infl_holder">Influencias:</string>
 
     <!-- Strings related to login -->
     <string name="facebook_app_id">2274019486175607</string>

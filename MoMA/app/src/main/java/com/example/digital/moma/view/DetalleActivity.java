@@ -45,6 +45,8 @@ public class DetalleActivity extends AppCompatActivity {
     public static final String KEY_OBRA = "obra";
     public static final String KEY_IMG = "img";
     public static final String KEY_AUTHOR = "author";
+    public static final String KEY_USERN = "name";
+    public static final String KEY_USERI = "icon";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +59,15 @@ public class DetalleActivity extends AppCompatActivity {
         navHeader = navigationView.getHeaderView(0);
         userIcon = navHeader.findViewById(R.id.userIcon);
         userName = navHeader.findViewById(R.id.userName);
-        /*Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        String nombre = bundle.getString(KEY_USER);
-        userName.setText(nombre);
-        Uri uri =  getIntent().getParcelableExtra(KEY_IMG);
-        Glide.with(this).load(uri).into(userIcon);*/
+
+        //RECIBIR BUNDLE
+        Intent intent2 = getIntent();
+        Bundle bundle = intent2.getExtras();
+
+        //String uName = bundle.getString(KEY_USERN);
+        //userName.setText(uName);
+       // Uri uIcon =  getIntent().getParcelableExtra(KEY_USERI);
+        //Glide.with(this).load(uIcon).into(userIcon);
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -78,6 +83,7 @@ public class DetalleActivity extends AppCompatActivity {
                         //Ir a chat
                         return true;
                     case R.id.logout:
+                        LoginManager.getInstance().logOut();
                         FirebaseAuth.getInstance().signOut();
                         Intent login = new Intent(DetalleActivity.this, LoginActivity.class);
                         startActivity(login);
@@ -87,27 +93,6 @@ public class DetalleActivity extends AppCompatActivity {
             }
         });
         //DRAWER - FINAL
-
-        //SETEO FIREBASE
-
-        firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference raiz = firebaseStorage.getReference();
-
-        Intent intent2 = getIntent();
-        Bundle bundle = intent2.getExtras();
-
-        String nombre = bundle.getString(KEY_OBRA);
-        String imagen = bundle.getString(KEY_IMG);
-        final String autorID = bundle.getString(KEY_AUTHOR);
-        Integer id = (Integer.parseInt(autorID)) - 1;
-
-        mDatabase = FirebaseDatabase.getInstance();
-
-        DatabaseReference root = mDatabase.getReference();
-        final DatabaseReference artists = root.child("artists");
-        DatabaseReference child = artists.child(id.toString());
-        //DatabaseReference idReference = mDatabase.getReference("artistID");
-
         //BUSCAR COMPONENTES
 
         imagenObra = findViewById(R.id.imagenObra);
@@ -118,9 +103,22 @@ public class DetalleActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.mLayout);
         navigationView = findViewById(R.id.navView);
 
+
+        //SACAR DEL BUNDLE DATOS
+        String nombre = bundle.getString(KEY_OBRA);
+        String imagen = bundle.getString(KEY_IMG);
+        final String autorID = bundle.getString(KEY_AUTHOR);
+        Integer id = (Integer.parseInt(autorID)) - 1;
+
         //SETEAR COMPONENTES
 
         nombreObra.setText(nombre);
+
+        //SETEO FIREBASE STORAGE
+
+        firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference raiz = firebaseStorage.getReference();
+
 
         //SETEAR IMAGEN
         raiz.child(imagen).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -134,6 +132,15 @@ public class DetalleActivity extends AppCompatActivity {
                 Toast.makeText(DetalleActivity.this, "Error", Toast.LENGTH_LONG).show();
             }
         });
+
+        //SETEO FIREBASE DB
+
+        mDatabase = FirebaseDatabase.getInstance();
+
+        DatabaseReference root = mDatabase.getReference();
+        final DatabaseReference artists = root.child("artists");
+        DatabaseReference child = artists.child(id.toString());
+        //DatabaseReference idReference = mDatabase.getReference("artistID");
 
         //SETEAR DATOS ARTISTA
 

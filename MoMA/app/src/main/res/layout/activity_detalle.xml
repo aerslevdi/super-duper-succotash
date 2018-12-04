@@ -22,42 +22,75 @@
             android:scaleType="centerInside"
             android:src="@drawable/header" />
 
+
         <TextView
             android:id="@+id/nameObra"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_below="@id/imagenObra"
-            android:text="artista"
+            android:layout_marginLeft="2dp"
+            tools:text="NOMBRE DE LA PINTURA"
             android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/artistaHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nameObra"
+            android:textSize="20sp"
+            android:text="@string/artist_Holder"
+            android:layout_marginLeft="5dp"/>
 
         <TextView
             android:id="@+id/nameArtista"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/nameObra"
+            android:layout_toRightOf="@id/artistaHolder"
+            android:layout_marginLeft="5dp"
             android:text="nombre"
             android:textSize="20sp"
             />
+        <TextView
+            android:id="@+id/countryHolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/artistaHolder"
+            android:textSize="20sp"
+            android:text="@string/pais_holder"
+            android:layout_marginLeft="5dp"/>
 
         <TextView
             android:id="@+id/country"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/nameArtista"
+            android:layout_toRightOf="@id/countryHolder"
             android:textSize="20sp"
+            android:layout_marginLeft="2dp"
             android:text="pais"/>
+        <TextView
+            android:id="@+id/inflHolder"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/countryHolder"
+            android:text="@string/infl_holder"
+            android:layout_marginLeft="5dp"/>
 
         <TextView
             android:id="@+id/influence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/country"
+            android:layout_toRightOf="@id/countryHolder"
             android:textSize="20sp"
+            android:layout_marginLeft="2dp"
             android:text="influencia"/>
 
     </RelativeLayout>
 
-    <android.support.design.widget.NavigationView
+ <android.support.design.widget.NavigationView
         android:id="@+id/navView"
         app:headerLayout="@layout/nav_header"
         android:layout_width="wrap_content"
