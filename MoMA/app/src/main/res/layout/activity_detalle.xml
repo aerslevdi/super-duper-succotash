@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/imagenObra"
+            android:textAlignment="center"
             android:layout_marginLeft="2dp"
             tools:text="NOMBRE DE LA PINTURA"
             android:textSize="20sp"/>
@@ -58,6 +59,7 @@
             android:layout_below="@id/artistaHolder"
             android:textSize="20sp"
             android:text="@string/pais_holder"
+            android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"/>
 
         <TextView
@@ -67,6 +69,7 @@
             android:layout_below="@id/nameArtista"
             android:layout_toRightOf="@id/countryHolder"
             android:textSize="20sp"
+            android:layout_marginStart="5dp"
             android:layout_marginLeft="2dp"
             android:text="pais"/>
         <TextView
@@ -76,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/countryHolder"
             android:text="@string/infl_holder"
+
             android:layout_marginLeft="5dp"/>
 
         <TextView
